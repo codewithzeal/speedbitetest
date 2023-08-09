@@ -1,4 +1,4 @@
-const createResponse = (rows) =>{
+const createResponse = (primaryRow,secondaryRows) =>{
     let response = {
         "contact":{
 			"primaryContatctId": "",
@@ -8,17 +8,27 @@ const createResponse = (rows) =>{
 		}
     }
 
-    for(let row of rows)
-    {
-        
-            if(row.linkedId==null)
-            response.contact.primaryContatctId=row.id
+    let visitedEmail = []
+    let visitedPhoneNumber = []
+    response.contact.primaryContatctId = primaryRow.id
+    response.contact.emails.push(primaryRow.email)
+    response.contact.phoneNumbers.push(primaryRow.phonenumber)
+    visitedEmail[primaryRow.email]=true
+    visitedPhoneNumber[primaryRow.phonenumbers]=true
+
+    secondaryRows.forEach((row)=>{
+        if(!visitedEmail[row.email])
+        {
+            visitedEmail[row.email]=true
             response.contact.emails.push(row.email)
+        }
+        if(!visitedPhoneNumber[row.phonenumber])
+        {
+            visitedPhoneNumber[row.phonenumber]=true
             response.contact.phoneNumbers.push(row.phonenumber)
-            if(row.linkedId!=null)
-            response.contact.secondaryContactIds(row.id)
-        
-    }
+        }
+        response.contact.secondaryContactIds.push(row.id)
+    })    
 
     return response
 }

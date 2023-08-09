@@ -1,64 +1,57 @@
 const createDataEntity = require("../utilities/createDataEntity")
-const { getAllFromPrimary, insertQuery } = require("../utilities/queryProvider")
+const {insertQuery, selectAllQuery, selectOnIdQuery, selectOnLinkedIdQuery } = require("../utilities/queryProvider")
 const executeQuery = require("./queryExecutor")
 
 
-const createNewPrimaryContact = (requestBody)=>{
-    const dataEntity = createDataEntity(requestBody)
-    const query = insertQuery(dataEntity,"primarycontacts")
+const insertContact = (dataEntity)=>{
     return new Promise((s,r)=>{
-        const rows = executeQuery(query)
-        if(rows==null)
-        r()
-        else
-        s(dataEntity)
+        const query = insertQuery(dataEntity)
+        executeQuery(query).then((rows)=>{
+            s(dataEntity)
+        }).catch((err)=>{
+            r()
+        })
     })
 }
 
-const createNewSecondaryContact = (requestBody,linkID)=>{
-
-}
-
-
-const shiftToSecondory = (dataEntity)=>{
-
-}
-
-const identifyOperation = (requestBody) =>{
-    const query = getAllFromPrimary(requestBody.email,requestBody.phoneNumber)
-    
+const selectAll=(email,phonenumber)=>{
+    const query = selectAllQuery(email,phonenumber)
     return new Promise((s,r)=>{
         executeQuery(query).then((rows)=>{
-            console.log("total values in db: ",rows.length)
-            if(rows==null)
+            s(rows)
+        }).catch((err)=>{
             r()
-            else
-            {
-                if(rows.length==0)
-                {
-                    createNewPrimaryContact(requestBody).then((data)=>{
-                        s([data])
-                    }).catch((data)=>{
-                        r()
-                    })
-                }
-                if(rows.length==1)
-                {
-                    console.log(rows)
-                    s(rows);
-                }
-                else
-                {
-                    //code to shift to secondary
-                }
-            }
-        }).catch((data)=>{
+        })
+    })
+}
+
+const selectOnId=(id)=>{
+    const query = selectOnIdQuery(id);
+    return new Promise((s,r)=>{
+        executeQuery(query).then((rows)=>{
+            s(rows)
+        }).catch((err)=>{
             r()
         })
         
-
     })
-
 }
 
-module.exports = identifyOperation
+const selectAllOnLinkedId = (id)=>{
+    const query = selectOnLinkedIdQuery(id);
+    return new Promise((s,r)=>{
+        executeQuery(query).then((rows)=>{
+            s(rows)
+        }).catch((err)=>{
+            r()
+        })
+        
+    })
+}
+
+module.exports = {
+    insertContact,
+    selectAll,
+    selectAllOnLinkedId,
+    selectOnId
+}

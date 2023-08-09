@@ -1,13 +1,16 @@
+let counter = 0;
+
 const createDataEntity = (requestBody,linkID=null)=>
 {
+    counter++
     return {
-        id: Math.floor(Math.random() * (1000 - 1 + 1)) + 1,
+        id: counter,
         phonenumber: requestBody.phoneNumber,
         email: requestBody.email,
         linkedId: linkID,
         linkPrecedence: linkID==null?"primary":"secondary",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: requestBody.createdat?requestBody.createdAt:new Date().toISOString(),
+        updatedAt: requestBody.updatedat?requestBody.updatedAt:new Date().toISOString(),
         deletedAt: null
     }
 }
