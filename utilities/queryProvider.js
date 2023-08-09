@@ -35,9 +35,18 @@ const selectOnLinkedIdQuery = (id)=>{
     return query
 }
 
+const updatePrimaryToSecondaryQuery = (secondaryId,linkId)=>{
+    const query = {
+        text: 'update contacts set linkedid = $1, linkPrecedence=$2, updatedat=$3 where id = $4',
+        values: [linkId,"secondary",new Date().toISOString(),secondaryId]
+    };
+    return query
+}
+
 module.exports={
     selectAllQuery,
     insertQuery,
     selectOnIdQuery,
-    selectOnLinkedIdQuery
+    selectOnLinkedIdQuery,
+    updatePrimaryToSecondaryQuery
 }

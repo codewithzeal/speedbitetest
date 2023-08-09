@@ -32,13 +32,11 @@ const identityHandler = (requestBody)=>{
                 console.log("values already exists")
                 resolvePrimaryContact(rows,requestBody).then(async (res)=>{
                     let primaryEntity = res.pcontact
-                    console.log("identified primary contact as: ",primaryEntity)
                     if(res.shouldUpdate&&checkForInsert(requestBody))
                     {
                         
                         let secondaryEntity = createDataEntity(requestBody,primaryEntity.id)
                         console.log("inserting new secondary")
-                        secondaryResponses.push(secondaryEntity)
                         await insertContact(secondaryEntity)
                     }
                     

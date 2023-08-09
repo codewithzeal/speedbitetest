@@ -10,8 +10,8 @@ const pool = new Pool({
 //     console.log(res.rows)
 // })
 
-// pool.query("delete from contacts",(err,res)=>{
-//     console.log(res.rows)
-// })
+pool.query("delete from contacts",(err,res)=>{
+    console.log(res.rows)
+})
 
 module.exports = pool

@@ -1,5 +1,5 @@
 const createDataEntity = require("../utilities/createDataEntity")
-const {insertQuery, selectAllQuery, selectOnIdQuery, selectOnLinkedIdQuery } = require("../utilities/queryProvider")
+const {insertQuery, selectAllQuery, selectOnIdQuery, selectOnLinkedIdQuery, updatePrimaryToSecondaryQuery } = require("../utilities/queryProvider")
 const executeQuery = require("./queryExecutor")
 
 
@@ -49,9 +49,22 @@ const selectAllOnLinkedId = (id)=>{
     })
 }
 
+const updatePrimaryToSecondary=(secondaryId,linkid)=>{
+    const query = updatePrimaryToSecondaryQuery(secondaryId,linkid)
+    return new Promise((s,r)=>{
+        executeQuery(query).then((rows)=>{
+            s(rows)
+        }).catch((err)=>{
+            r()
+        })
+        
+    })
+}
+
 module.exports = {
     insertContact,
     selectAll,
     selectAllOnLinkedId,
-    selectOnId
+    selectOnId,
+    updatePrimaryToSecondary
 }
