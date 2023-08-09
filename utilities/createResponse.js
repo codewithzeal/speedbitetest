@@ -14,15 +14,15 @@ const createResponse = (primaryRow,secondaryRows) =>{
     response.contact.emails.push(primaryRow.email)
     response.contact.phoneNumbers.push(primaryRow.phonenumber)
     visitedEmail[primaryRow.email]=true
-    visitedPhoneNumber[primaryRow.phonenumbers]=true
+    visitedPhoneNumber[primaryRow.phonenumber]=true
 
     secondaryRows.forEach((row)=>{
-        if(!visitedEmail[row.email])
+        if(visitedEmail[row.email]===undefined)
         {
             visitedEmail[row.email]=true
             response.contact.emails.push(row.email)
         }
-        if(!visitedPhoneNumber[row.phonenumber])
+        if(visitedPhoneNumber[row.phonenumber.toString()]===undefined)
         {
             visitedPhoneNumber[row.phonenumber]=true
             response.contact.phoneNumbers.push(row.phonenumber)

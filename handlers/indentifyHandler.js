@@ -15,6 +15,12 @@ const identityHandler = (requestBody)=>{
 
             if(rows.length==0)
             {
+                if(!checkForInsert(requestBody))
+                {
+                    r()
+                    return
+                }
+                
                 console.log("creating a new id")
                 const dataEntity = createDataEntity(requestBody)
                 insertContact(dataEntity).then((data)=>{
